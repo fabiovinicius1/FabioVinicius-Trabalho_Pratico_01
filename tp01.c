@@ -123,17 +123,16 @@ void print_array(char *vet, int tam){
 //Funçao para abrir arquivo de texto e colocar os caracteres em um vetor.
 void open_file(FILE * arquivo, char *vet, int *tamanho){
     char aux;
-    int i;
+    int i = 0;
     arquivo = fopen("arquivo.txt","r");
     while (fscanf(arquivo, " %c", &aux )!= EOF){
-        (*tamanho)++;        
         if(aux != '\n'){
             vet[i] = aux;
             i++;
+            ++(*tamanho);        
         }        
     }
     fclose(arquivo);
-    --(*tamanho);
 }
 
 //Funçao para copiar os caracteres do vetor texto[50] para o vetor chave[26] da struct dicionario.
