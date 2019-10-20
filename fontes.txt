@@ -1,0 +1,3 @@
+https://github.com/akash-asquare/Removing-Duplicate-number-from-array-using-C/blob/master/arrayduplicatenum.c
+http://www.cplusplus.com/reference/cstdio/fgetc/
+
