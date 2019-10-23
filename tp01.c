@@ -55,10 +55,10 @@ void push(Dicionario *D, int x, int y){
 
 /*Funçao que pecorre o arquivo de texto e cria uma lista com um no para cada palavra repetida 
 com informaçoes da linha e quantas vezes apareceu.*/
-void pecorre_file(FILE * arquivo, char chave, Dicionario *D){
+void pecorre_file(Dicionario *D, char chave){
     char aux;
     int linha = 0,repete = 0;
-
+    FILE *arquivo;
     arquivo = fopen("arquivo.txt","r");
     while ((aux = fgetc(arquivo)) != EOF){
         if (aux == chave){
@@ -72,18 +72,20 @@ void pecorre_file(FILE * arquivo, char chave, Dicionario *D){
             repete = 0; //zera o contador do dado int(repete)
         }
     }
+    if(repete != 0){ //como a ultima linha nao possui '\n', pois é EOF, quando sair do loop é dado um push
+        push(D,linha,repete);
+    }  
     fclose(arquivo);
 }
 
 //Funçao para printar o dicionario e seus respectivos nodos da lista encadeada.
-void print_dic(Dicionario *D, int tam,FILE * arquivo){
+void print_dic(Dicionario *D, int tam){
     char chave;
     printf("\nSAIDA: \n");
     for (int i = 0; i < tam; i++){
         chave = D->chave[i]; // pecorrer todas as posiçoes do vetor
         printf("%c: ",chave);
-        pecorre_file(arquivo, chave,D); // para cada posiçao do vetor cria uma lista encadeada
-        
+        pecorre_file(D,chave); // para cada posiçao do vetor cria uma lista encadeada
         for (Valor *p = D->inicio; p!= NULL; p = p->proximo){
             printf("(%d|%d) ", p->linha,p->qnt_vezes);   
         }
@@ -121,9 +123,10 @@ void print_array(char *vet, int tam){
 }
 
 //Funçao para abrir arquivo de texto e colocar os caracteres em um vetor.
-void open_file(FILE * arquivo, char *vet, int *tamanho){
+void open_file(char *vet, int *tamanho){
     char aux;
     int i = 0;
+    FILE *arquivo;
     arquivo = fopen("arquivo.txt","r");
     while (fscanf(arquivo, " %c", &aux )!= EOF){
         if(aux != '\n'){
@@ -142,28 +145,29 @@ void append(Dicionario *D, char *vet, int tam){
 }
 
 //Funçao para mostra no terminal o conteudo do arquivo de texto.
-void print_file(FILE * arquivo){
+void print_file(){
     char aux;
+    FILE *arquivo;
     arquivo = fopen("arquivo.txt","r");
     printf("ENTRADA:\n");
     while ((aux = fgetc(arquivo)) != EOF){
         printf("%c",aux);    
     }
+    printf("\n");
     fclose(arquivo);
 }
 
 int main(){
     int tamanho_vetor=0;
     char texto[50];
-    FILE *arquivo;
     Dicionario *D = create_list();
 
-    print_file(arquivo);
-    open_file(arquivo, texto, &tamanho_vetor);
+    print_file();
+    open_file(texto, &tamanho_vetor);
     remove_duplicate(texto, &tamanho_vetor);
     print_array(texto, tamanho_vetor);
     append(D, texto, tamanho_vetor);
-    print_dic(D,tamanho_vetor,arquivo);
+    print_dic(D,tamanho_vetor);
 
     return 0;
 }
