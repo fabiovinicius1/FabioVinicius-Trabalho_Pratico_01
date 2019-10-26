@@ -34,7 +34,6 @@ void list_destroy_iterativo(Dicionario *D) {
     }
     /* depois que libera os nodos da lista encadeada é preciso que tam,inicio e fim 
     voltem a ter as informaçoes da funçao Dicionario *create_list() */
-    D->tam=0;
     D->inicio = D->fim = NULL; 
 }
 
@@ -87,7 +86,12 @@ void print_dic(Dicionario *D, int tam){
         printf("%c: ",chave);
         pecorre_file(D,chave); // para cada posiçao do vetor cria uma lista encadeada
         for (Valor *p = D->inicio; p!= NULL; p = p->proximo){
-            printf("(%d|%d) ", p->linha,p->qnt_vezes);   
+            if(D->tam == 1){ //quando tam for igual a 1, a saida é exibida sem apresenta virgula 
+                printf("(%d|%d)", p->linha,p->qnt_vezes);
+            }else{
+                printf("(%d|%d), ", p->linha,p->qnt_vezes);
+            }
+            D->tam--;
         }
         printf("\n");
         list_destroy_iterativo(D); // libera os nodos da lista encadeada de cada posiçao do vetor chave
