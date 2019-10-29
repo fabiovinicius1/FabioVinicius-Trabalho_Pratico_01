@@ -165,13 +165,21 @@ int main(){
     int tamanho_vetor=0;
     char texto[50];
     Dicionario *D = create_list();
+    
+    FILE *arquivo;
+    arquivo = fopen("arquivo.txt","r");
+    if (arquivo == NULL){
+        printf("Erro na leitura do arquivo!!!\nCrie um arquivo de texto no mesmo diretorio do codigo tp01 com o seguinte nome e extensao: arquivo(.txt)\n");
+        return 0;
+    }else{
+        print_file();
+        open_file(texto, &tamanho_vetor);
+        remove_duplicate(texto, &tamanho_vetor);
+        print_array(texto, tamanho_vetor);
+        append(D, texto, tamanho_vetor);
+        print_dic(D,tamanho_vetor);
+    }
 
-    print_file();
-    open_file(texto, &tamanho_vetor);
-    remove_duplicate(texto, &tamanho_vetor);
-    print_array(texto, tamanho_vetor);
-    append(D, texto, tamanho_vetor);
-    print_dic(D,tamanho_vetor);
 
     return 0;
 }
